@@ -1,49 +1,69 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:job_plus/Controllers/LoginController.dart';
-import 'package:job_plus/Views/Register.dart';
+import 'package:job_plus/Controllers/RegisterController.dart';
 import 'dart:math' as math;
 
 import 'package:job_plus/constants.dart';
 
-class Login extends StatelessWidget {
-  Login({super.key});
+class Register extends StatelessWidget {
+  Register({super.key});
 
-  final loginController = Get.put(LoginController());
+  final registerController = Get.put(RegisterController());
 
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: IconButton(
+              color: colortheam1,
+              iconSize: 40,
+              icon: Icon(
+                Icons.chevron_left_rounded,
+              ),
+              onPressed: () {
+                Get.back();
+              },
+            ),
+          ),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.only(
-                  top: 60, left: 30, right: 30, bottom: 30),
+                  top: 20, left: 30, right: 30, bottom: 30),
               child: Column(children: [
-                SizedBox(
-                    height: 150,
-                    child: Transform.rotate(
-                      angle: 1 * math.pi / 180, // 5 degrees to radians
-                      child: Image.asset(
-                        'assets/images/logoDark.png',
-                        fit: BoxFit.fitWidth,
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Register Now',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            color: fontColor1,
+                            fontSize: 32,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'Roboto'),
                       ),
-                    )),
-                // const SizedBox(
-                //   height: 5,
-                // ),
-                Text(
-                  'Welcome JobPlus',
-                  style: TextStyle(
-                      color: fontColor1,
-                      fontSize: 32,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'Roboto'),
+                      Text(
+                        'Search your dream job fast and ease !',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            color: fontColor2,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'Roboto'),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(
                   height: 40,
                 ),
                 TextFormField(
-                    controller: loginController.email,
+                    controller: registerController.addEmail,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Please Enter Email";
@@ -70,14 +90,42 @@ class Login extends StatelessWidget {
                   height: 15,
                 ),
                 TextFormField(
-                    controller: loginController.password,
+                    controller: registerController.addFullName,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please Enter Full Name";
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      labelText: 'Full Name',
+                      labelStyle: TextStyle(color: fontColor2),
+                      hintText: 'Full Name',
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 158, 158, 158),
+                          style: BorderStyle.none,
+                        ),
+                      ),
+                      prefixIcon: const Icon(Icons.person_outline_outlined),
+                      prefixIconColor: fontColor2,
+                    )),
+
+                const SizedBox(
+                  height: 15,
+                ),
+                TextFormField(
+                    controller: registerController.addPassword,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Please Enter Password";
                       }
                       return null;
                     },
-                    obscureText: loginController.isObscure.value,
+                    obscureText: registerController.isObscure.value,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
@@ -94,11 +142,49 @@ class Login extends StatelessWidget {
                       prefixIcon: const Icon(Icons.password_rounded),
                       prefixIconColor: fontColor2,
                       suffixIcon: IconButton(
-                        icon: Icon(loginController.isObscure.value
+                        icon: Icon(registerController.isObscure.value
                             ? Icons.visibility
                             : Icons.visibility_off),
                         onPressed: () {
-                          loginController.toggleObscure();
+                          registerController.toggleObscure();
+                        },
+                      ),
+                    )),
+                const SizedBox(
+                  height: 15,
+                ),
+                TextFormField(
+                    controller: registerController.addPassword,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please Confirm the Password";
+                      } else if (registerController.addPassword.text != value) {
+                        return "Incorrect password";
+                      }
+                      return null;
+                    },
+                    obscureText: registerController.isObscure.value,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      labelText: 'Confirm Password',
+                      labelStyle: TextStyle(color: fontColor2),
+                      hintText: 'Confirm Password',
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 158, 158, 158),
+                          style: BorderStyle.none,
+                        ),
+                      ),
+                      prefixIcon: const Icon(Icons.password_rounded),
+                      prefixIconColor: fontColor2,
+                      suffixIcon: IconButton(
+                        icon: Icon(registerController.isObscure.value
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                        onPressed: () {
+                          registerController.toggleObscure();
                         },
                       ),
                     )),
@@ -118,29 +204,16 @@ class Login extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        'Login',
+                        'Register',
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: colortheam3),
                       )),
                 ),
+
                 const SizedBox(
-                  height: 20,
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: Text(
-                    'Forgot Password?',
-                    style: TextStyle(
-                        color: fontColor1,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: 'Roboto'),
-                  ),
-                ),
-                const SizedBox(
-                  height: 40,
+                  height: 30,
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -175,32 +248,6 @@ class Login extends StatelessWidget {
                   ],
                 ),
                 // Spacer(flex: 1,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Haven't an account?",
-                      style: TextStyle(
-                          color: fontColor2,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: 'Roboto'),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Get.to(Register());
-                      },
-                      child: Text(
-                        " Register",
-                        style: TextStyle(
-                            color: colortheam1,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: 'Roboto'),
-                      ),
-                    ),
-                  ],
-                ),
               ]),
             ),
           ),

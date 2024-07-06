@@ -37,7 +37,7 @@ class Splash extends StatelessWidget {
                   child: Transform.rotate(
                     angle: 1 * math.pi / 180, // 5 degrees to radians
                     child: Image.asset(
-                      '/images/logo.png',
+                      'assets/images/logo.png',
                       fit: BoxFit.fitWidth,
                     ),
                   ))),
